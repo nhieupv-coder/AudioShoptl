@@ -11,7 +11,7 @@ import com.poly.ass.interceptor.AuthInterceptor;
 public class InterConfig implements WebMvcConfigurer {
 	@Autowired
 	AuthInterceptor auth;
-
+//
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(auth).addPathPatterns("/**").excludePathPatterns("/resources/**");

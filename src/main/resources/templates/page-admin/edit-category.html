@@ -1,0 +1,64 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{/layout-admin/index.html::admin(~{::editCategory})}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+<div class="container-fluid" th:fragment="editCategory">
+
+	<!-- Page Heading -->
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Quản lý loại sản phẩm</h1>
+
+	</div>
+	<!-- Content Row -->
+	<div class="row">
+
+		<!-- Area Chart -->
+		<div class="col-xl col-lg">
+			<div class="card shadow mb-4">
+				<!-- Card Header - Dropdown -->
+				<div
+						class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					<h6 class="m-0 font-weight-bold text-primary">Quản lý loại sản
+						phẩm</h6>
+					[(${message })]
+				</div>
+				<!-- Card Body -->
+				<div class="card-body">
+					<div class="row">
+						<div class="col">
+							<form action="/admin/category/insert" method="get"
+								  th:object="${category}">
+								<label for="id" class="form-label">ID Loại sản phẩm: </label>
+								<input th:field="*{id}" th:readonly="${st}"  class="form-control" />
+								<small th:errors="*{id}" class="text-danger"  />
+								<br />
+								<label for="name" class="form-label">Tên Loại: </label>
+								<input type="text" th:field="*{namecategory}" class="form-control" />
+								<small th:errors="*{namecategory}" class="text-danger" />
+								<hr>
+								<button class="btn btn-success text-white" type="submit">
+									Create</button>
+								<button formaction="/admin/category/update"
+										class="btn btn-primary  text-white">update</button>
+								<a th:href="@{|/admin/category/delete/${category.id == null ?'n':category.id }|}"
+								   class="btn btn-danger text-white"> Delete</a>
+								<a th:href="@{/admin/category/reset}" class="btn btn-secondary text-white">
+									reset</a>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+</body>
+</html>

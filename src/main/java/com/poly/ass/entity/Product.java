@@ -30,6 +30,10 @@ import lombok.Data;
 @Entity
 @Table(name = "Products")
 public class Product implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@Pattern(regexp = "SP[0-9]{3}")
 	String id;

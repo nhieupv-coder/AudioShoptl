@@ -45,7 +45,7 @@ public class User implements Serializable {
 	String phone;
 	@NotBlank
 	String address;
-	@NotNull
+	@NotBlank
 	String admin;
 	@NotNull
 	boolean actived;

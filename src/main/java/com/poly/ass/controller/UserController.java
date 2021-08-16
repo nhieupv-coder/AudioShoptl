@@ -14,9 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +47,14 @@ public class UserController {
 	ImageService imgService;
 	@Autowired
 	MailerServiceImpl mailService;
+    @Autowired
+	UserService userService;
+
+	@RequestMapping("/home/login/oauth2")
+	public String loginOauth2(OAuth2AuthenticationToken oauth2){
+        userService.LoginFormOAuth2(oauth2);
+		return "redirect:/home";
+	}
 
 	@GetMapping("/account/login")
 	public String login(@RequestParam("error") Optional<String> error, Model model) {
@@ -113,24 +123,26 @@ public class UserController {
 	}
 
 	@PostMapping("/account/update-profile")
-	public String updateProfile(@Valid @ModelAttribute("user") User user, BindingResult rs,
-			@RequestParam("image") MultipartFile multipartFile, Model model) throws IllegalStateException, IOException {
+	public String updateProfile(Model model,@Valid @ModelAttribute("user") User user, Errors rs,
+			@RequestParam("image") MultipartFile multipartFile ) throws IllegalStateException, IOException {
 		if (userDao.existsById(user.getId())) {
 			// get user in table user;
 			User userGet = userDao.getById(user.getId());
 			user.setPassword(userGet.getPassword());
 			if (multipartFile.isEmpty()) {
 				user.setPhoto(userGet.getPhoto());
+				System.out.print("Check 1");
 			} else {
 				user.setPhoto(imgService.saveImage(multipartFile, model));
+				System.out.print("Check 2");
 			}
-			user.setActived(userGet.isActived());
-			user.setAdmin(userGet.getAdmin());
 			if (rs.hasErrors()) {
 				model.addAttribute("message", "<b style='color:red'>Cập nhật thất bại </b> ");
+				rs.getAllErrors().stream().forEach(i->System.out.println(i));
 				return "user/profile";
 			}
 			userDao.save(user);
+			System.out.print("Check 3");
 		}
 
 		return "redirect:/home/profile?message=true";
@@ -184,12 +196,14 @@ public class UserController {
 
 	@GetMapping("/home/register")
 	public String registerPage(@ModelAttribute("user") User user) {
+		user.setActived(true);
+		user.setAdmin("USER");
 		return "user/register";
 	}
 
 	@PostMapping("/account/register")
-	public String register(@Valid @ModelAttribute("user") User user, BindingResult rs,
-			@RequestParam("confirmpass") String confirmPass, Model model) {
+	public String register( Model model,@Valid @ModelAttribute("user") User user, Errors rs,
+			@RequestParam("confirmpass") String confirmPass) {
 		if (!rs.hasErrors()) {
 			if (confirmPass.length() < 6) {
 				model.addAttribute("eVal", "Xác nhận mật khẩu ít nhất 6 ký tự");
@@ -226,6 +240,7 @@ public class UserController {
 			}
 
 		}
+		rs.getAllErrors().forEach(i->System.out.println(i));
 		user.setPassword("");
 		return "user/register";
 	}
@@ -276,11 +291,15 @@ public class UserController {
 
 	@RequestMapping("/admin/edit-user")
 	public String editUser(@ModelAttribute("user") User user) {
-		return "views/page-admin/edit-users";
+		user.setAdmin("ADMIN");
+		user.setGender(true);
+		user.setActived(true);
+		return "page-admin/edit-users";
 	}
 
 	@RequestMapping("/admin/user/reset")
-	public String reset(@ModelAttribute("user") User user) {
+	public String reset(@ModelAttribute("user") User user)  {
+		user.setPhoto("default.png");
 		return "redirect:/admin/edit-user";
 	}
 
@@ -293,7 +312,7 @@ public class UserController {
 		Page<User> page = userDao.findAllByNameLike("%" + keyworks + "%", pageable);
 		model.addAttribute("names", keyworks);
 		model.addAttribute("page", page);
-		return "views/page-admin/list-users";
+		return "page-admin/list-users";
 	}
 
 	// Create
@@ -313,7 +332,10 @@ public class UserController {
 						"<div><b class='text-danger'>Thất bại !<b> Tài khoản " + user.getId() + " đã tồn tại</div>");
 			}
 		}
-		return "views/page-admin/edit-users";
+		if(user.getPhoto() == null || user.getPhoto().length() == 0 || user.getPhoto() ==" "){
+			user.setPhoto("default.png");
+		}
+		return "page-admin/edit-users";
 	}
 
 	//
@@ -339,7 +361,10 @@ public class UserController {
 						+ " Không tồn tại</div>");
 			}
 		}
-		return "views/page-admin/edit-users";
+		if(user.getPhoto() == null || user.getPhoto().length() == 0 || user.getPhoto() ==" "){
+			user.setPhoto("default.png");
+		}
+		return "page-admin/edit-users";
 	}
 
 	@RequestMapping("/admin/user/delete")
@@ -368,22 +393,7 @@ public class UserController {
 		} catch (Exception e) {
 			map.put("message", "Không tìm thấy user");
 		}
-		return new ModelAndView("views/page-admin/edit-users", map);
+		return new ModelAndView("page-admin/edit-users", map);
 	}
 
-	@ModelAttribute("role")
-	public Map<Boolean, String> getAdmin() {
-		Map<Boolean, String> map = new HashMap<>();
-		map.put(true, "admin");
-		map.put(false, "user");
-		return map;
-	}
-
-	@ModelAttribute("status")
-	public Map<Boolean, String> getStatus() {
-		Map<Boolean, String> map = new HashMap<>();
-		map.put(true, "Active");
-		map.put(false, "Inactive");
-		return map;
-	}
 }

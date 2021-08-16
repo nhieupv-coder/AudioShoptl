@@ -66,7 +66,7 @@ public class HomeProductController {
 	}
 
 	@RequestMapping("/product/search-sort-pagination")
-	public String listPagination(@RequestParam("keyworks") Optional<String> kw,Optional<Integer> pageNo,@RequestParam("id") Optional<String> idCategory,@RequestParam("typesort") Optional<String> typeSort,@RequestParam("sortby") Optional<String> sortBy ,Model model) {
+	public String listPagination(@RequestParam("keyworks") Optional<String> kw,@RequestParam("pageNo") Optional<Integer> pageNo,@RequestParam("id") Optional<String> idCategory,@RequestParam("typesort") Optional<String> typeSort,@RequestParam("sortby") Optional<String> sortBy ,Model model) {
 		//
 		List<Category> listCategory = categoryDao.findAll();
 		model.addAttribute("listCategory", listCategory);
@@ -100,10 +100,9 @@ public class HomeProductController {
 		
 		model.addAttribute("page", page);
 		model.addAttribute("kw", kWorks);
+	     page.getContent().forEach(i->System.out.println(i.getId()));
 		return "page/product";
 	}
-
-
 
 	@ModelAttribute("discountDao")
 	public DiscountDAO discountDao() {

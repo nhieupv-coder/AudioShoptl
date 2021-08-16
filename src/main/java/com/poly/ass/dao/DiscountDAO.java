@@ -17,4 +17,5 @@ public interface DiscountDAO extends JpaRepository<Discount, Long> {
 	List<Discount> findByProductEquals(Product product);
 	@Query("SELECT d FROM Discount d WHERE d.product.nameproduct LIKE ?1 ORDER BY d.percent DESC")
 	Page<Discount> findDiscounByProductName(String nameProduct,Pageable pageable);
+
 }

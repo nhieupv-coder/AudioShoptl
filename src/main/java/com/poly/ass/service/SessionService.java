@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SessionService {
-	@Autowired
+	@Autowired(required = false)
 	HttpSession session;
 
 	public <T> T get(String name) {

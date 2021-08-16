@@ -12,20 +12,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ImageService {
-	@Autowired
+	@Autowired(required = false)
 	ServletContext app;
 
 	public String saveImage(MultipartFile multipartFile, Model model) throws IllegalStateException, IOException {
-		File file = new File(app.getRealPath("/resource/static/img/post"));
+		File file = new File(app.getRealPath("/img/post"));
 		if (!file.exists()) {
 			file.mkdirs();
 		}
 		try {
-			String path = app.getRealPath("/resources/static/img/post") + "/" + multipartFile.getOriginalFilename();
+			String filename =  Integer.toHexString((int)System.currentTimeMillis())+multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().indexOf("."));
+			String path = app.getRealPath("/img/post") + "/" +filename;
 			File fileSave = new File(path);
 			multipartFile.transferTo(fileSave);
-			model.addAttribute("img", multipartFile.getOriginalFilename());
-			return multipartFile.getOriginalFilename();
+			model.addAttribute("img", filename);
+			return filename;
 		} catch (Exception e) {
 			return "default.png";
 		}

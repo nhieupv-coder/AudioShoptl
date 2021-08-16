@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{/layout-admin/index.html::admin(~{::editProduct})}">
+<head>
+</head>
+<body>
+<div class="container-fluid" th:fragment="editProduct">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Quản lý sản phẩm</h1>
+
+    </div>
+    <!-- Content Row -->
+    <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl col-lg">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div
+                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Quản lý sản phẩm</h6>
+                    [(${message })]
+
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <form th:object="${product}" method="post"
+                          enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <img th:src="@{|/img/post/${img}|}"
+                                     class="p-2 m-2 img-thumbnail" alt="">
+                                <div class="input-group mb-3">
+                                    <form id="formImg" th:action="@{/admin/editproduct/uploadImage}"
+                                          enctype="multipart/form-data" method="post">
+                                        <input type="file" name="img">
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+
+                                <label for="id" class="form-label">ID Sản phẩm: </label>
+                                <input type="text" th:field="*{id}" class="form-control" th:readonly="${readonly }"
+                                       aria-describedby="id"/>
+                                <small th:errors="*{id}" class="text-danger"/>
+                                </br> <label for="name" class="form-label">Tên Sản phẩm: </label>
+                                <input type="text" th:field="*{nameproduct}" class="form-control"/>
+                                <small th:errors="*{nameproduct}" class="text-danger"/>
+                                </br> <label for="name" class="form-label">Loại sản phẩm: </label>
+                                <select th:field="*{category.id}" class="form-control">
+                                    <option th:each="c:${categories}" th:value="${c.key}" th:text="${c.value}" />
+                                </select>
+                                <label for="name" class="form-label">Giá: </label>
+                                <input th:field="*{price}" type="text" id="name" class="form-control"/>
+                                <small th:errors="*{price}" class="text-danger"/>
+                                </br> <label for="name" class="form-label">Số lượng: </label>
+                                <input type="number" th:field="*{quantity}" class="form-control"
+                                       aria-describedby="passwordHelpBlock"/>
+                                <small th:errors="*{quantity}" class="text-danger"/>
+                                </br> <label for="name" class="form-label">Mô tả: </label>
+                                <textarea class="form-control" th:field="*{description}"  />
+                                <small th:errors="*{description}" class="text-danger"/>
+                                </br>
+                                <input type="hidden" th:field="*{image}" value="${img}"/>
+                                <hr>
+
+                                <button class="btn btn-success text-white"
+                                        th:formaction="@{/admin/editproduct/add}">Create
+                                </button>
+                                <button class="btn btn-primary text-white"
+                                        th:formaction="@{/admin/editproduct/update} ">update
+                                </button>
+                                <a class="btn btn-danger text-white"
+                                   th:href="@{|/admin/editproduct/delete/${  product.id ==null ?'n':product.id}|}">
+                                    Delete</a> <a
+                                    class="btn btn-secondary text-white"
+                                    th:href="@{/admin/editproduct/reset}"> reset</a>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+

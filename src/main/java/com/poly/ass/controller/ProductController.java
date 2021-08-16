@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,12 +51,12 @@ public class ProductController {
 	@GetMapping("/admin/editproduct")
 	public String editProduct(@ModelAttribute("product") Product p, Model model) {
 		model.addAttribute("img", "default.png");
-		return "views/page-admin/edit-product";
+		return "page-admin/edit-product";
 	}
 
 	@PostMapping("/admin/editproduct/add")
-	public String add(@Valid @ModelAttribute("product") Product p, BindingResult rs,
-			@RequestParam("img") MultipartFile multipartfile, Model model) throws IllegalStateException, IOException {
+	public String add(Model model ,@Valid @ModelAttribute("product") Product p, Errors rs,
+			@RequestParam("img") MultipartFile multipartfile) throws IllegalStateException, IOException {
 		if (!rs.hasErrors()) {
 			if (!productDao.existsById(p.getId())) {
 				String dir = imgUltil.saveImage(multipartfile, model);
@@ -67,9 +68,10 @@ public class ProductController {
 				model.addAttribute("message",
 						"<div class='text-danger font-weight-bold'>Sản phẩm " + p.getId() + " đã tồn tại</div>");
 			}
+			model.addAttribute("img", p.getImage());
 		}
-		model.addAttribute("img", p.getImage());
-		return "views/page-admin/edit-product";
+		model.addAttribute("img","default.png");
+		return "page-admin/edit-product";
 	}
 
 	@ModelAttribute("categories")
@@ -88,7 +90,7 @@ public class ProductController {
 		model.addAttribute("img", product.getImage());
 		model.addAttribute("product", product);
 		model.addAttribute("readonly", true);
-		return "views/page-admin/edit-product";
+		return "page-admin/edit-product";
 	}
 
 	@GetMapping("/admin/editproduct/delete/{id1}")
@@ -133,7 +135,7 @@ public class ProductController {
 			}
 		}
 		model.addAttribute("img", p.getImage());
-		return "views/page-admin/edit-product";
+		return "page-admin/edit-product";
 	}
 
 	@RequestMapping("/admin/listproduct/pagination")
@@ -145,7 +147,7 @@ public class ProductController {
 		if (id.orElse("") != "") {
 			Page<Product> page = productDao.getAllByCategoryAndNameproduct(id.orElse(""), "%"+kWorks+"%", pageable);
 			model.addAttribute("pageP", page);
-			model.addAttribute("valueC", id);
+			model.addAttribute("valueC", id.orElse(""));
 		} else {
 			Page<Product> page = productDao.findAll(pageable);
 			model.addAttribute("pageP", page);
@@ -154,7 +156,7 @@ public class ProductController {
 		List<Category> listCategory = categoryDao.findAll();
 		model.addAttribute("listCategory", listCategory);
 		model.addAttribute("idCategory", id);
-		return "views/page-admin/list-product";
+		return "page-admin/list-product";
 	}
 
 }

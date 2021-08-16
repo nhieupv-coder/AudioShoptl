@@ -1,0 +1,102 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{/layout-admin/index.html::admin(~{::listCategory})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div th:fragment="listCategory">
+    <div class="container-fluid">
+        <!-- Page Heading -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Quản lý loại sản phẩm</h1>
+        </div>
+        <!-- Content Row -->
+        <div class="row p-0 m-0">
+            <!-- Area Chart -->
+            <div class="col-xl col-lg p-0 m-0">
+
+                <div class="card-body p-0">
+                    <div class="container-fluid m-0 p-0">
+                        <!-- DataTales Example -->
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Danh sách loại
+                                    sản phẩm</h6>
+                            </div>
+                            <div class="card-body m-0 p-0">
+                                <div class="row mt-3 p-2">
+                                    <div class="col">
+                                        <form id="form-search" action="/admin/listCategory" method="post">
+                                            <label class="p-0 m-0">Tìm kiếm theo tên: </label>
+                                            <div class="input-group pt-2">
+                                                <input type="text" class="form-control" th:onblur="'submit()'"
+                                                       th:value="${kws}" name="search-by"
+                                                       placeholder="Search by name ...."> <span
+                                                    class="input-group-btn">
+												<button class="btn btn-default" type="submit">
+													<i class="fas fa-search"></i>
+												</button>
+											</span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row m-4">
+                                <table class="table table-bordered" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Tên Loại Hàng</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="c:${pageC.content}" th:object="${c}">
+                                        <td>[[*{id }]]</td>
+                                        <td>[[*{namecategory}]]</td>
+                                        <td><a th:href="@{|/admin/category/edit/*{id}|}"
+                                               class="btn btn-success">Edit</a> <a
+                                                th:href="@{|/admin/category/delete/d*{id}|}"
+                                                class="btn btn-danger">Delete</a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <nav aria-label="Page navigation example ">
+                                <ul class="pagination d-flex justify-content-center">
+                                    <li class="page-item"><a class="page-link"
+                                                             th:href="@{|/admin/listCategory?pageNo=${pageC.number-1 < 0?0:pageC.number-1}|}">Previous</a>
+                                    </li>
+                                    <li th:each="i:${#numbers.sequence(0,pageC.totalPages-1 < 0 ? 0:pageC.totalPages-1)}"
+                                        th:class="${i == pageC.number?'page-item active':'page-item' }"><a
+                                            th:class="page-link"
+                                            th:href="@{|/admin/listCategory?pageNo=${i}|}">[[${i+1}]]</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                                             th:href="@{|/admin/listCategory?pageNo=${pageC.number+1 >pageC.totalPages-1?pageC.totalPages-1:pageC.number+1 }|}">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function submit() {
+            var a = document.getElementById("form-search");
+            s.submit();
+        }
+    </script>
+</div>
+</body>
+</html>

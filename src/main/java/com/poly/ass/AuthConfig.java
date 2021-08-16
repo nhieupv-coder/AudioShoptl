@@ -35,9 +35,10 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 		http.cors().disable();
 		http.csrf().disable();
 		http.formLogin().loginPage("/account/login").defaultSuccessUrl("/home",false).failureUrl("/login/error").usernameParameter("username").passwordParameter("password");
-		http.rememberMe().rememberMeParameter("remember");
-		http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").antMatchers("/home/order","/home/cart").authenticated().anyRequest().permitAll();
-		http.logout().logoutUrl("/home/logout").logoutSuccessUrl("/home");
+		http.oauth2Login().loginPage("/account/login").defaultSuccessUrl("/home/login/oauth2",true).authorizationEndpoint().baseUri("/login/oauth2/authorization");
+		http.rememberMe().rememberMeParameter("remember").rememberMeCookieName("rememberlogin").tokenValiditySeconds(100);
+		http.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN").antMatchers("/home/order","/home/cart","/home/bought").authenticated().anyRequest().permitAll();
+		http.logout().deleteCookies("JSESSIONID").logoutUrl("/home/logout").logoutSuccessUrl("/home");
 		http.exceptionHandling().accessDeniedPage("/errors");
 	}
 }

@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CookieService {
-	@Autowired
+	@Autowired(required = false)
 	HttpServletRequest request;
-	@Autowired
+	@Autowired(required = false)
 	HttpServletResponse response;
 
 	public Cookie get(String name) {

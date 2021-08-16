@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ParamService {
-	@Autowired
+	@Autowired(required = false)
 	HttpServletRequest request;
 
 	public String getString(String name, String defaultValue) {

@@ -18,6 +18,7 @@ import com.poly.ass.dao.OrderDetailDAO;
 import com.poly.ass.entity.Discount;
 import com.poly.ass.entity.Product;
 import com.poly.ass.entity.TrendProduct;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
@@ -35,5 +36,15 @@ public class HomeController {
 		 model.addAttribute("topProduct", listTop10ProductTrend);
 		 model.addAttribute("pageDiscount",pageDiscount);
 		return "page/home";
+	}
+	@GetMapping("/test/a")
+	public String testHome(){
+		System.out.println("hello");
+	  return "layout/index";
+	}
+	@GetMapping("/login/error")
+	public String loginError(Model model ){
+		model.addAttribute("error","Login fail! ,Sai tên đăng nhập hoặc mật khẩu");
+		return "user/login";
 	}
 }

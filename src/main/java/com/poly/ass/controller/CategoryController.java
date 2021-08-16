@@ -35,7 +35,7 @@ public class CategoryController {
 
 	@GetMapping("/admin/editcategory")
 	public String editCategory(@ModelAttribute("category") Category category) {
-		return "views/page-admin/edit-category";
+		return "page-admin/edit-category";
 	}
 
 	@RequestMapping("/admin/listCategory")
@@ -47,7 +47,7 @@ public class CategoryController {
 		Pageable pageable = PageRequest.of(pageNo.orElse(0), 5);
 		Page<Category> pageCategory = categoryDao.findAllByNamecategoryLike("%" + kWorks + "%", pageable);
 		model.addAttribute("pageC", pageCategory);
-		return "views/page-admin/list-category";
+		return "page-admin/list-category";
 	}
 
 	@GetMapping("/admin/category/insert")
@@ -63,7 +63,7 @@ public class CategoryController {
 						+ " Đã tồn tại</div>");
 			}
 		}
-		return "views/page-admin/edit-category";
+		return "page-admin/edit-category";
 
 	}
 
@@ -72,7 +72,7 @@ public class CategoryController {
 		Category category = categoryDao.getOne(id);
 		model.addAttribute("category", category);
 		model.addAttribute("st", true);
-		return "views/page-admin/edit-category";
+		return "page-admin/edit-category";
 	}
 
 	@GetMapping("/admin/category/reset")
@@ -88,11 +88,11 @@ public class CategoryController {
 			} else {
 				model.addAttribute("message",
 						"<div class='text-danger font-weight-bold'>Thất bại! loại hàng này không tồn tại</div>");
-				return "views/page-admin/edit-category";
+				return "page-admin/edit-category";
 			}
 			return "redirect:/category/edit/" + category.getId();
 		}
-		return "views/page-admin/edit-category";
+		return "page-admin/edit-category";
 	}
 
 	@GetMapping("/admin/category/delete/{id1}")

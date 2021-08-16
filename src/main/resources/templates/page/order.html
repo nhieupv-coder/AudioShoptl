@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{/layout/index.html::layout(~{::order})}">
+
+<head>
+</head>
+<body>
+	<div th:fragment="order">
+		<!-- breadcrumb start-->
+		<section class="breadcrumb breadcrumb_bg">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-lg-8">
+						<div class="breadcrumb_iner">
+							<div class="breadcrumb_iner_item">
+								<h2>Sản phẩm chi tiết</h2>
+								<p>
+									Trang chủ <span>-</span> Mặt hàng
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- breadcrumb start-->
+		<!--================End Home Banner Area =================-->
+
+		<!--================Single Product Area =================-->
+		<div class="product_image_area section_padding">
+			<div class="container">
+				<div class="row s_product_inner justify-content-between">
+					<div class="col-lg-7 col-xl-7">
+						<div class="product_slider_img">
+							<div id="vertical">
+								<div data-thumb="@{|/img/post/${product.image }|}" >
+								<img th:src="@{|/img/post/${product.image}|}" />
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-5 col-xl-4">
+					<div class="s_product_text">
+						<h5>
+							previous <span>|</span> next
+						</h5>
+						<h3>[[${product.nameproduct}]]</h3>
+						<h2 th:class="${discountDao.findByProductEquals(product).size() == 0 ? '' : 'text-muted'}" th:style="${discountDao.findByProductEquals(product).size() == 0 ? '' : 'text-decoration: line-through;'}"  >
+						[[${#numbers.formatDecimal(product.price,0,'COMMA',0,'COMMA')}]]
+						VND
+					</h2>
+						<h2 th:if="${discountDao.findByProductEquals(product).size != 0}">
+								[[${#numbers.formatDecimal(product.price - discountDao.findByProductEquals(product).get(0).getPercent()*product.price/100,0,'COMMA',0,'COMMA')}]]
+							VND
+						</h2>
+					<ul class="list">
+						<li><a class="active" th:href="@{/product/category}"> <span>Loại
+									hàng</span> : [[${product.category.namecategory }]]
+						</a></li>
+						<li><a href="#"> <span>Số lượng</span> :
+								[[${product.quantity }]]
+						</a></li>
+					</ul>
+					<p>
+						<span>Mô tả:</span> [[${product.description }]]
+					</p>
+					<form th:action="@{/product/addtocart}" method="post">
+						<div
+							class="card_area d-flex justify-content-between align-items-center">
+							<div class="product_count">
+								<span class="inumber-decrement"> <i class="ti-minus"></i></span>
+								<input type="hidden" name="idproduct" th:value="${product.id}" />
+								<input class="input-number" type="text" value="1" min="0"
+									name="amount" max="10"> <span class="number-increment">
+									<i class="ti-plus"></i>
+								</span>
+							</div>
+							<button type="submit" class="btn_3 " style="border: 10px;">add
+								to cart</button>
+							<a href="#" class="like_us"> <i class="ti-heart"></i>
+							</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+	</body>
+</html>

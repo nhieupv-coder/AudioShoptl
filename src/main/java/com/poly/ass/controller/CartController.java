@@ -14,6 +14,7 @@ import com.poly.ass.entity.*;
 
 import javax.websocket.Session;
 
+import com.poly.ass.ultils.TotalUltis;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -48,12 +49,13 @@ public class CartController {
 	UserService UserService;
 	@Autowired
 	DiscountDAO discountDao;
-	
+	@Autowired
+	TotalUltis totalUtils;
+
 	@PostMapping("/product/addtocart")
 	public String addToCart(@RequestParam("idproduct") String id, @RequestParam("amount") Optional<Integer> quantity,Authentication auth) {
 		String username = auth.getName();
 		User u = userDao.getById(username);
-		
 		//
 		Product p = productDao.getById(id);
 		Double price;
@@ -95,15 +97,17 @@ public class CartController {
 	}
 
 	@GetMapping("home/bought")
-	public String bought(Model model) {
-		if (session.get("username") == null) {
+	public String bought(Model model, Authentication auth) {
+		if (auth.getName() == null) {
 			return "page/bought";
 		}
-		User user = userDao.getById(session.get("username"));
+		User user = userDao.getById(auth.getName());
 		List<Order> listOrder = orderDao.findByUserEquals(user);
 		model.addAttribute("listorder", listOrder);
+		System.out.println("size: "+listOrder.size());
 		return "page/bought";
 	}
+
 
 	@GetMapping("/home/cart")
 	public String cart(@RequestParam("iduser") Optional<String> address, Model model) {
@@ -135,6 +139,10 @@ public class CartController {
 	@ModelAttribute("discountDao")
 	public DiscountDAO discountDao() {
 		return discountDao;
+	}
+	@ModelAttribute("totalU")
+	public TotalUltis totalU(){
+		return totalUtils;
 	}
 
 }

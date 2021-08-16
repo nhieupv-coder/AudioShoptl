@@ -1,0 +1,110 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{/layout-admin/index.html::admin(~{::editUser})}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div th:fragment="editUser">
+    <div class="container-fluid">
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Quản lý User</h1>
+
+        </div>
+        <!-- Content Row -->
+        <div class="row">
+            <!-- Area Chart -->
+            <div class="col-xl col-lg">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Quản lý User</h6>
+                        [(${message })]
+
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <form th:object="${user}" method="post"
+                              enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img th:src="@{|/img/post/${user.photo == null ? 'default.png' :user.photo}|}"
+                                         class="p-2 m-2 img-thumbnail" alt="">
+                                    <div class="input-group mb-3">
+                                        <input type="file" name="img">
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <label class="form-label">Username</label>
+                                    <input th:field="*{id}" class="form-control mb-1"/>
+                                    <small th:errors="*{id}" class="text-danger"/>
+                                    </br> <label class="form-label">Password: </label>
+                                    <input type="password" th:field="*{password}" class="form-control"/>
+                                    <small th:errors="*{password}" class="text-danger"/>
+                                    </br> <label class="form-label">Họ Và Tên:</label>
+                                    <input th:field="*{name}" class="form-control"/>
+                                    <small th:errors="*{name}" class="text-danger"/>
+                                    </br> <label class="form-label">E-mail</label>
+                                    <input th:field="*{email}" class="form-control mb-1"/>
+                                    <small th:errors="*{email}" class="text-danger"/>
+                                    </br> <label class="form-label">Giới tính:</label> <br>
+                                    <label><input type="radio" th:field="*{gender}" th:value="true" th:name="gender"/>
+                                        Nam</label>
+                                    <label><input type="radio" th:field="*{gender}" th:value="false" th:name="gender"/>
+                                        Nữ</label>
+                                    <small th:errors="*{gender}" class="text-danger"/>
+                                    </br> <label class="form-label">Điện thoại:</label>
+                                    <input th:field="*{phone}" type="text" class="form-control"/>
+                                    <small th:errors="*{phone}" class="text-danger"/>
+                                    </br> <label class="form-label">Ngày Sinh:</label>
+                                    <input type="date" th:field="*{birthDay}" name="bir"
+                                           class="form-control"/>
+                                    <small th:errors="*{birthDay}" class="text-danger"/>
+                                    <input type="hidden" th:field="*{photo}" value="${img}"/>
+                                    <br/> <label class="form-label">Địa chỉ:</label>
+                                    <input th:field="*{address}" class="form-control"/>
+                                    <small th:errors="*{address}" class="text-danger"/><br/>
+                                    <label class="form-label">Role:</label> <br>
+                                    <label><input type="radio" name="admin" th:field="*{admin}" th:value="ADMIN"
+                                                  th:text="ADMIN"></label>
+                                    <label><input type="radio" name="admin" th:field="*{admin}" th:value="USER"
+                                                  th:text="USER"></label>
+                                    <errors th:field="*{admin}" class="text-danger"/>
+                                    <br/>
+                                    <label class="form-label">Status:</label> <br>
+                                    <label><input type="radio" th:field="*{actived}" th:value="true" name="active">Active</label>
+                                    <label><input type="radio" th:field="*{actived}" th:value="false" name="active">Inactive</label>
+                                    <small th:errors="*{actived}" class="text-danger"/>
+                                    <hr>
+                                    <button class="btn btn-success text-white"
+                                            th:formaction="@{/admin/user/create}">Create
+                                    </button>
+                                    <button class="btn btn-primary text-white"
+                                            th:formaction="@{/admin/user/update}">update
+                                    </button>
+                                    <a class="btn btn-danger text-white"
+                                       th:href="@{|/admin/user/delete?=${user.id }|}">
+                                        Delete</a> <a class="btn btn-secondary text-white"
+                                                      th:href="@{/admin/user/reset}"> reset</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function submitSearch() {
+            var a = document.getElementById("formSubmit");
+            a.submit();
+        }
+    </script>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.thymeleaf.org" th:fragment="layout(view)">
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Audio Market</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+	<!-- animate CSS -->
+	<link rel="stylesheet" th:href="@{/css/animate.css}">
+	<!-- owl carousel CSS -->
+	<link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+	<link rel="stylesheet" th:href="@{/css/nice-select.css}">
+	<!-- font awesome CSS -->
+	<link rel="stylesheet" th:href="@{/css/all.css}">
+	<!-- flaticon CSS -->
+	<link rel="stylesheet" th:href="@{/css/flaticon.css}">
+	<link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+	<!-- font awesome CSS -->
+	<link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+	<!-- swiper CSS -->
+	<link rel="stylesheet" th:href="@{/css/slick.css}">
+	<!-- style CSS -->
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/nice-select.css}">
+	<link rel="stylesheet" th:href="@{/css/style2.css}">
+	<link rel="stylesheet" th:href="@{/css/price_rangs.css}">
+</head>
+<body>
+	<!--::header part start::-->
+	<div th:replace="~{layout/header.html::header}"></div>
+	<!-- Header part end-->
+	<div th:replace="${view}"></div>
+	<!--::footer_part start::-->
+	<div th:replace="~{layout/footer.html::footer}"></div>
+	<!--::footer_part end::-->
+	<script th:src="@{/js/jquery-1.12.1.min.js}"></script>
+	<!-- popper js -->
+	<script th:src="@{/js/popper.min.js}"></script>
+	<!-- bootstrap js -->
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<!-- easing js -->
+	<script th:src="@{/js/jquery.magnific-popup.js}"></script>
+	<!-- swiper js -->
+	<script th:src="@{/js/swiper.min.js}"></script>
+	<!-- swiper js -->
+	<script th:src="@{/js/masonry.pkgd.js}"></script>
+	<!-- particles js -->
+	<script th:src="@{/js/owl.carousel.min.js}"></script>
+	<script th:src="@{/js/jquery.nice-select.min.js}"></script>
+	<!-- slick js -->
+	<script th:src="@{/js/slick.min.js}"></script>
+	<script th:src="@{/js/jquery.counterup.min.js}"></script>
+	<script th:src="@{/js/waypoints.min.js}"></script>
+	<script th:src="@{/js/contact.js}"></script>
+	<script th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+	<script th:src="@{/js/jquery.form.js}"></script>
+	<script th:src="@{/js/jquery.validate.min.js}"></script>
+	<script th:src="@{/js/mail-script.js}"></script>
+	<!-- custom js -->
+	<script th:src="@{/js/custom.js}"></script>
+	<script th:src="@{/js/app.js}"></script>
+	<script th:src="@{/js/jquery.nice-select.min.js}"></script>
+</body>
+
+</html>

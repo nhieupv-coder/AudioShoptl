@@ -25,7 +25,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 //	SessionService session;
 //	@Autowired
 //	UserDAO userDao;
-
+//
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse res, Object handler) {
 		if (!req.isUserInRole("ADMIN") && !req.isUserInRole("USER")) {

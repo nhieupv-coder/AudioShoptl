@@ -1,5 +1,6 @@
 package com.poly.ass.controller;
 
+import com.poly.ass.dao.StatisticalDAO;
 import com.poly.ass.entity.*;
 import com.poly.ass.ultils.ConvertUltil;
 
@@ -28,6 +29,8 @@ import com.poly.ass.dao.OrderDAO;
 @Controller
 public class StatisticalController {
 	@Autowired
+	StatisticalDAO statisticalDAO;
+	@Autowired
 	OrderDAO orderDao;
 	@Autowired
 	CategoryDAO categoryDao;
@@ -48,7 +51,7 @@ public class StatisticalController {
 		model.addAttribute("page", page);
 		model.addAttribute("begin", begin.orElse(fmt.format(new Date())));
 		model.addAttribute("end", end.orElse(fmt.format(new Date())));
-		return "views/page-admin/statistical-bydate";
+		return "page-admin/statistical-bydate";
 	}
 	@RequestMapping("/admin/statistical-category")
 	public String getStatisticalByCategory(@RequestParam("category") Optional<String> idCategory,@RequestParam("pageNo") Optional<Integer> pageNo,Model model) {
@@ -56,8 +59,10 @@ public class StatisticalController {
 		Page<Statistical> page = orderDao.statisticalByCategory(idCategory.orElse("LH001"), pageable);
 		model.addAttribute("page", page);
 		model.addAttribute("idCategory", idCategory.orElse("LH001"));
-		return "views/page-admin/statistical-category";
+		return "page-admin/statistical-category";
 	}
-	
-
+	@ModelAttribute("statistcaldao")
+	public StatisticalDAO getDao(){
+       return statisticalDAO;
+	}
 }
