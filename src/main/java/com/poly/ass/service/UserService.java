@@ -30,6 +30,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
+
             User user = userDao.getById(username);
             String password = user.getPassword();
             String Role = user.getAdmin();
